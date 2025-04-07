@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=3 uid="uid://dada2cgo3nrxi"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_87uj1"]
+[ext_resource type="Texture2D" uid="uid://2sqmfgppitjy" path="res://zombie_tilesheet.png" id="2_28jls"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lga5p"]
+atlas = ExtResource("2_28jls")
+region = Rect2(0, 0, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rm353"]
+atlas = ExtResource("2_28jls")
+region = Rect2(80, 0, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cuyll"]
+atlas = ExtResource("2_28jls")
+region = Rect2(0, 110, 80, 110)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_irhed"]
+atlas = ExtResource("2_28jls")
+region = Rect2(80, 110, 80, 110)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5xw2c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lga5p")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rm353")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cuyll")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_irhed")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_stuo3"]
+radius = 21.0
+height = 90.0
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 3
+script = ExtResource("1_87uj1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_5xw2c")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 10)
+shape = SubResource("CapsuleShape2D_stuo3")
+metadata/_edit_group_ = true

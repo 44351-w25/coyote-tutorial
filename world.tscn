@@ -1,0 +1,92 @@
+[gd_scene load_steps=7 format=3 uid="uid://dk3rywa05lqyq"]
+
+[ext_resource type="PackedScene" uid="uid://dada2cgo3nrxi" path="res://player.tscn" id="1_dt5mp"]
+[ext_resource type="Script" path="res://world.gd" id="1_ih3of"]
+[ext_resource type="PackedScene" uid="uid://cw4nlaxnlupv7" path="res://tile_map.tscn" id="2_5xoe4"]
+[ext_resource type="PackedScene" uid="uid://0f40dakyvsr4" path="res://enemy.tscn" id="3_8whdy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b2iil"]
+size = Vector2(294, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_au21b"]
+size = Vector2(2822, 121)
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_ih3of")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+
+[node name="Background" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+texture_repeat = 3
+region_enabled = true
+region_rect = Rect2(0, 0, 9216, 1536)
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.75, 0.75)
+
+[node name="TextureRect" type="TextureRect" parent="ParallaxBackground/ParallaxLayer2"]
+offset_left = 1160.0
+offset_top = 67.0
+offset_right = 1350.0
+offset_bottom = 194.0
+
+[node name="Platform" type="StaticBody2D" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="Platform"]
+offset_left = 316.0
+offset_top = 241.0
+offset_right = 608.0
+offset_bottom = 281.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
+position = Vector2(461, 261)
+shape = SubResource("RectangleShape2D_b2iil")
+one_way_collision = true
+
+[node name="TileMap" parent="." instance=ExtResource("2_5xoe4")]
+layer_0/tile_data = PackedInt32Array(393216, 65536, 0, 393217, 131072, 0, 393218, 131072, 0, 393219, 131072, 0, 393220, 131072, 0, 393221, 131072, 0, 393222, 131072, 0, 393223, 131072, 0, 393224, 196608, 0, 393226, 262144, 0, 196613, 327680, 0, 196614, 393216, 0, 196615, 393216, 0, 196616, 393216, 0, 196617, 458752, 0, 393228, 131072, 0, 393229, 131072, 0, 393230, 131072, 0, 393231, 131072, 0, 393232, 131072, 0, 393233, 131072, 0, 393234, 131072, 0, 393235, 131072, 0, 393236, 131072, 0, 393237, 131072, 0, 393238, 131072, 0, 393239, 131072, 0, 393240, 131072, 0, 393241, 131072, 0, 393242, 131072, 0, 393243, 131072, 0, 393244, 131072, 0, 393245, 131072, 0, 393246, 131072, 0, 393247, 131072, 0, 393248, 131072, 0, 458751, 131072, 0, 393215, 131072, 0, 327679, 131072, 0, 262143, 131072, 0, 196607, 131072, 0, 131071, 131072, 0, 65535, 131072, 0, -1, 131072, 0, 327694, 131072, 0, 327695, 131072, 0, 327696, 131072, 0, 327697, 131072, 0, 327693, 65536, 0)
+
+[node name="Player" parent="." instance=ExtResource("1_dt5mp")]
+position = Vector2(176, 328)
+SPEED = 600.0
+JUMP_VELOCITY = -700.0
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+rotation = 1.5708
+limit_left = 0
+position_smoothing_enabled = true
+drag_horizontal_enabled = true
+drag_horizontal_offset = 1.0
+editor_draw_drag_margin = true
+
+[node name="Enemy" parent="." instance=ExtResource("3_8whdy")]
+position = Vector2(419, 350)
+is_lemming = true
+
+[node name="PlayerSpawnPoint" type="Marker2D" parent="."]
+position = Vector2(98, 289)
+
+[node name="KillPlane" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillPlane"]
+position = Vector2(851, 721)
+shape = SubResource("RectangleShape2D_au21b")
+
+[node name="Enemy2" parent="." instance=ExtResource("3_8whdy")]
+position = Vector2(178, 170)
+
+[node name="ParallaxBackground2" type="ParallaxBackground" parent="."]
+layer = 1
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground2"]
+motion_scale = Vector2(1.1, 1.1)
+
+[node name="TextureRect" type="Sprite2D" parent="ParallaxBackground2/ParallaxLayer"]
+position = Vector2(947, 185)
+scale = Vector2(1.83684, 1.94094)
+
+[connection signal="body_entered" from="KillPlane" to="." method="game_over"]
