@@ -66,3 +66,8 @@ animation = &"idle"
 position = Vector2(1, 10)
 shape = SubResource("CapsuleShape2D_stuo3")
 metadata/_edit_group_ = true
+
+[node name="WileTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="WileTimer" to="." method="_on_wile_timer_timeout"]
