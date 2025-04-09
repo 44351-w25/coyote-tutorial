@@ -7,8 +7,10 @@ extends CharacterBody2D
 var believe_in_gravity = false
 
 var coyote_frames = 0
+var buffer_count = 0
 var is_jumping = false
 @export var MAX_FRAMES = 100
+@export var BUFFER_FRAMES = 100
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -33,13 +35,15 @@ func _physics_process(delta):
 		believe_in_gravity = false
 		is_jumping = false
 
+	if not is_on_floor() and Input.is_action_just_pressed("ui_accept"):
+		buffer_count = BUFFER_FRAMES
+	if buffer_count > 0:
+		buffer_count -= 1
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and \
-	   #coyote_frames < MAX_FRAMES \
-	   not believe_in_gravity \
-	   and not is_jumping:
-		velocity.y = JUMP_VELOCITY
-		is_jumping = true
+	if Input.is_action_just_pressed("ui_accept") or buffer_count > 0:
+		if not believe_in_gravity and not is_jumping:
+			velocity.y = JUMP_VELOCITY
+			is_jumping = true
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
